@@ -1,0 +1,7 @@
+date,domain,impressions,conversions,payout
+2010-01-01,example.com,500,20,15.0
+2010-01-01,example.org,600,30,18.5
+2010-01-02,example.com,400,29,15.0
+2010-01-02,example.org,700,35,18.5
+2010-01-03,example.com,300,25,15.0
+2010-01-03,example.org,900,100,18.5
