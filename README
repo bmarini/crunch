@@ -1,41 +1,14 @@
-# Load from AR.select_all
-# Merge data sets on unique key
-# Load from CSV
-# Dump to CSV, ASCII table, etc (build modular)
-# Do filters and transforms like Ruport
-# Do summary tables easily
-# Plug into js graphing libs easily! (graphael support)
+# Crunch
 
-table = Crunch.load("data.csv")
-table = Crunch.load(array_of_hashes)
-table = Crunch.load(column_names, array_of_arrays)
+Crunch is a library designed for working with datasets, specifically datasets
+coming from database queries or CSV files.
 
-# Transforms - anything that responds to call, given a row
-# Filters    - anything that responds to call, given a row
-# Data types? (money, number, )
+## Goals
 
-Crunch.load("data.csv") do
-  transform do |r|
-    r.date   = Date.parse(r.date)
-    r.domain =
-  end
-
-  transform(:date) do |d|
-    Date.parse(d)
-  end
-
-  transform(:impressions, &:to_i)
-
-  date    :date
-  integer :impressions
-  float   :payout
-end
-
-__END__
-date,domain,impresssions,conversions,payout
-2010-01-01,example.com,500,20,15.0
-2010-01-01,example.org,600,30,18.5
-2010-01-02,example.com,400,29,15.0
-2010-01-02,example.org,700,35,18.5
-2010-01-03,example.com,300,25,15.0
-2010-01-03,example.org,900,100,18.5
+* Clean interface
+* Easily load and merge data from arrays of hashes
+* Leverage FasterCSV (or CSV in Ruby 1.9)
+* Dump to CSV, ASCII table, or html, or other formats
+* Do filters and transforms like Ruport
+* Do summary tables easily
+* Plug into js graphing libs easily! (graphael support)
