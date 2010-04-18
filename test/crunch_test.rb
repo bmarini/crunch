@@ -25,13 +25,13 @@ class TestCrunch < Test::Unit::TestCase
       integer 'impressions', 'conversions'
       float   'payout'
     end
-    
-    assert_equal Date.parse('2010-01-01'), table.first.date
-    assert_equal 500, table.first.impressions
-    assert_equal 20, table.first.conversions
-    assert_equal 15.0, table.first.payout
+
+    assert_equal Date.parse('2010-01-01'), table.first['date']
+    assert_equal 500, table.first['impressions']
+    assert_equal 20, table.first['conversions']
+    assert_equal 15.0, table.first['payout']
   end
-  
+
   def test_transform_columns
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) ) do
       transform('payout') do |val|
@@ -41,21 +41,21 @@ class TestCrunch < Test::Unit::TestCase
       transform('impressions', 'conversions') { |v| v.to_i + 100 }
     end
 
-    assert_equal 17.0, table.first.payout
-    assert_equal 600, table.first.impressions
-    assert_equal 120, table.first.conversions
+    assert_equal 17.0, table.first['payout']
+    assert_equal 600, table.first['impressions']
+    assert_equal 120, table.first['conversions']
   end
   
   def test_transform_rows
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) ) do
       integer 'conversions'
-
+      transform('impressions', &:to_f)
       transform do |row|
-        row['conversion_rate'] = row.conversions / row.impressions.to_f
+        row['conversion_rate'] = row['conversions'] / row['impressions']
       end
     end
     
-    assert_equal 0.04, table.first.conversion_rate
+    assert_equal 0.04, table.first['conversion_rate']
   end
 end
 

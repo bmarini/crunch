@@ -1,7 +1,5 @@
 module Crunch
   class Row < Hash
-
-    # TODO: Add support for hash with indifferent access
     def methodize_keys!
       symbols, strings = keys.partition { |k| k.is_a?(Symbol) }
 
