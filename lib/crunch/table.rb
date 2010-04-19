@@ -49,6 +49,14 @@ module Crunch
       cols.empty? ? transform_row(&block) : transform_cols(*cols, &block)
     end
 
+    def to_s
+      as(:str)
+    end
+
+    def as(format)
+      Rendering.render(self, format)
+    end
+
     private
 
     def to_row(array_or_hash)

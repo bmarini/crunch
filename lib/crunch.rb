@@ -4,6 +4,11 @@ autoload :CSV, "csv"
 module Crunch
   autoload :Table, "crunch/table"
   autoload :Row, "crunch/row"
+  autoload :Rendering, "crunch/rendering"
+
+  module Renderers
+    autoload :String, "crunch/renderers/string"
+  end
   
   class << self
     # Convenience method to Crunch::Table.new
