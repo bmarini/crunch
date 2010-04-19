@@ -8,36 +8,33 @@ module Crunch
 
       def maxes
         @maxes ||= begin
-          mxs = @table.inject([]) do |m, r|
-            @table.headers.each_with_index do |k, i|
-              m[i] = [ r[k].to_s.length, m[i].to_i ].max
+          mxs = @table.inject({}) do |m, r|
+            r.each do |(h,f)|
+              m[h] = [ f.to_s.length, m[h].to_i ].max
             end
             m
           end
 
           # Headers
-          @table.headers.each_with_index do |h, i|
-            mxs[i] = [ h.to_s.length, mxs[i] ].max
+          @table.headers.each do |h|
+            mxs[h] = [ h.to_s.length, mxs[h] ].max
           end
           mxs
         end
       end
 
-      def render
-        sep = "+-" + maxes.map { |m| "-" * m }.join("-+-") + "-+"
+      def seperator
+        "+-" + @table.headers.map { |h| "-" * maxes[h] }.join("-+-") + "-+"
+      end
 
-        puts sep
-        puts "| " + @table.headers.enum_for(:each_with_index).map { |h, i|
-                      h.to_s.ljust(maxes[i])
-                    }.join(" | ") + " |"
-        
-        puts sep
+      def render
+        puts seperator
+        puts "| " + @table.headers.map { |h| h.to_s.ljust(maxes[h]) }.join(" | ") + " |"
+        puts seperator
         @table.each do |row|
-          puts "| " + @table.headers.enum_for(:each_with_index).map { |h, i|
-                        row[h].to_s.ljust(maxes[i])
-                      }.join(" | ") + " |"
+          puts "| " + row.map { |(h,f)| f.to_s.ljust(maxes[h]) }.join(" | ") + " |"
         end
-        puts sep
+        puts seperator
       end
     end
   end
