@@ -3,22 +3,31 @@ module Crunch
     include Enumerable
     attr_reader :headers, :data
 
-    def initialize(data,&block)
+    def initialize(headers, &block)
       @transforms = []
-      instance_eval(&block) if block_given?
-
-      if data.first.is_a?(Array)
-        from_arrays(data)
-      elsif data.first.is_a?(Hash)
-        from_hashes(data)
-      else
-        raise ArguementError.new("data must be an array of arrays or hashes")
-      end
-
+      @data       = []
+      @headers    = headers
+      instance_eval &block if block_given?
+      self
     end
 
     extend Forwardable
     def_delegators :@data, :each, :first, :last, :[]
+
+    # Accepts a hash or array. All data inserted into the table must pass
+    # through this method
+    def push(row)
+      @data << run_transforms( to_row(row) )
+    end
+    alias_method :<<, :push
+
+    def unshift(row)
+      @data.unshift run_transforms( to_row(row) )
+    end
+
+    def load(rows)
+      rows.each { |r| push(r) }; self # For chaining onto #new
+    end
 
     def date(*cols)
       transform(*cols) { |c| Date.parse(c) }
@@ -42,6 +51,12 @@ module Crunch
 
     private
 
+    def to_row(array_or_hash)
+      array_or_hash.is_a?(Array) ?
+        Row[@headers.zip(array_or_hash)] :
+        Row[array_or_hash]
+    end
+
     def transform_cols(*cols, &block)
       @transforms += cols.map { |col| [block, col] }
     end
@@ -60,20 +75,6 @@ module Crunch
       end
 
       return row
-    end
-
-    def from_arrays(data)
-      @headers = data.shift
-      @data    = data.map do |r|
-        run_transforms Row[@headers.zip(r)]
-      end
-    end
-
-    def from_hashes(data)
-      @headers = data.first.keys
-      @data    = data.map do |r|
-        run_transforms Row[r]
-      end
     end
   end
 end

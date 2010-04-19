@@ -1,19 +1,10 @@
 require "test_helper"
 class TestCrunch < Test::Unit::TestCase
-  def test_method_access_for_rows
-    row = Crunch::Row['foo' => 'bar', :bee => 'boo'].methodize_keys!
-    assert_equal 'bar', row.foo
-    assert_equal 'boo', row.bee
-
-    row.foo = 'baz'
-    assert_equal 'baz', row.foo
-  end
-
   def test_load_csv
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) )
     assert_equal "example.com", table.first['domain']
   end
-  
+
   def test_load_hash
     table = Crunch.table( [:domain => "example.com", :visits => "5"] )
     assert_equal "example.com", table.first[:domain]
@@ -45,7 +36,7 @@ class TestCrunch < Test::Unit::TestCase
     assert_equal 600, table.first['impressions']
     assert_equal 120, table.first['conversions']
   end
-  
+
   def test_transform_rows
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) ) do
       integer 'conversions'
@@ -54,7 +45,7 @@ class TestCrunch < Test::Unit::TestCase
         row['conversion_rate'] = row['conversions'] / row['impressions']
       end
     end
-    
+
     assert_equal 0.04, table.first['conversion_rate']
   end
 end
