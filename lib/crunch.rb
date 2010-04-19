@@ -19,9 +19,9 @@ module Crunch
       if arg.is_a?(String)
         table(CSV.read(arg), &block)
       elsif arg.is_a?(Array) && arg.first.is_a?(Array)
-        Table.new(arg.shift, &block).load(arg)
+        Table.new(arg.shift, &block).push(*arg)
       elsif arg.is_a?(Array) && arg.first.is_a?(Hash)
-        Table.new(arg.first.keys, &block).load(arg)
+        Table.new(arg.first.keys, &block).push(*arg)
       else
         raise ArgumentError.new("Argument must be a string or an array of arrays or hashes")
       end

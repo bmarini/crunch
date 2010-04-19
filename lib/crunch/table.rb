@@ -1,32 +1,28 @@
 module Crunch
   class Table
     include Enumerable
-    attr_reader :headers, :data
+    attr_reader :headers, :table
 
     def initialize(headers, &block)
       @transforms = []
-      @data       = []
+      @table      = CSV::Table.new([])
       @headers    = headers
       instance_eval &block if block_given?
       self
     end
 
     extend Forwardable
-    def_delegators :@data, :each, :first, :last, :[]
+    def_delegators :@table, :each, :first, :last, :[]
 
     # Accepts a hash or array. All data inserted into the table must pass
     # through this method
-    def push(row)
-      @data << run_transforms( to_row(row) )
-    end
-    alias_method :<<, :push
-
-    def unshift(row)
-      @data.unshift run_transforms( to_row(row) )
+    def push(*rows)
+      rows.each { |row| self << row }
+      self
     end
 
-    def load(rows)
-      rows.each { |r| push(r) }; self # For chaining onto #new
+    def <<(row)
+      @table << run_transforms( to_row(row) )
     end
 
     def date(*cols)
