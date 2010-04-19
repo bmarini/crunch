@@ -61,7 +61,7 @@ module Crunch
 
     def to_row(array_or_hash)
       array_or_hash.is_a?(Array) ?
-        Row[@headers.zip(array_or_hash)] :
+        Row.new(@headers, array_or_hash) :
         Row[array_or_hash]
     end
 
