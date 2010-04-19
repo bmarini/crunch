@@ -18,7 +18,7 @@ module Crunch
       elsif arg.is_a?(Array) && arg.first.is_a?(Hash)
         Table.new(arg.first.keys, &block).load(arg)
       else
-        raise ArguementError.new("Arguement must be a string or an array of arrays or hashes")
+        raise ArgumentError.new("Argument must be a string or an array of arrays or hashes")
       end
     end
   end

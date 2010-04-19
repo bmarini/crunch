@@ -1,5 +1,11 @@
 require "test_helper"
 class TestCrunch < Test::Unit::TestCase
+  def test_invalid_arg
+    assert_raise(ArgumentError) do
+      Crunch.table 348
+    end
+  end
+
   def test_load_csv
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) )
     assert_equal "example.com", table.first['domain']
