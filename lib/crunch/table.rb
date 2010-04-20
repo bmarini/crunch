@@ -7,7 +7,11 @@ module Crunch
       @transforms = []
       @table      = CSV::Table.new([])
       @headers    = headers
-      instance_eval &block if block_given?
+
+      if block_given?
+        block.arity == 1 ? yield(self) : instance_eval(&block)
+      end
+
       self
     end
 

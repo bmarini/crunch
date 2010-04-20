@@ -19,5 +19,17 @@ class TestCrunchTable < Test::Unit::TestCase
     assert_equal Date.parse('2010-01-01'), table.first['date']
     assert_equal 0, table.first['impressions']
   end
+
+  def test_transforms_with_block_arity
+    foo = 'bar'
+
+    table = Crunch::Table.new(%w{date domain impressions conversions payout}) do |t|
+      t.transform { |r| r['foo'] = foo }
+    end
+
+    table << {'date' => '2010-01-01', 'payout' => '5.0'}
+
+    assert_equal 'bar', table.first['foo']
+  end
 end
 
