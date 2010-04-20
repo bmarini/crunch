@@ -31,5 +31,14 @@ class TestCrunchTable < Test::Unit::TestCase
 
     assert_equal 'bar', table.first['foo']
   end
+
+  def test_merging_datasets
+    visits = Crunch.table(TestData[:visits])
+    convrs = Crunch.table(TestData[:conversions])
+    table  = visits.merge(convrs) { |r| [ r[:date], r[:domain] ] }
+
+    assert_equal 500, table.first[:visits]
+    assert_equal 20, table.first[:conversions]
+  end
 end
 

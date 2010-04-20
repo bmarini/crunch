@@ -1,9 +1,14 @@
 module Crunch
   module Renderers
-    class String
-      def initialize(table)
-        @table = table
-        self
+    class String < Base
+      def render
+        puts seperator
+        puts "| " + @table.headers.map { |h| h.to_s.ljust(maxes[h]) }.join(" | ") + " |"
+        puts seperator
+        @table.each do |row|
+          puts "| " + row.map { |(h,f)| f.to_s.ljust(maxes[h]) }.join(" | ") + " |"
+        end
+        puts seperator
       end
 
       def maxes
@@ -25,16 +30,6 @@ module Crunch
 
       def seperator
         "+-" + @table.headers.map { |h| "-" * maxes[h] }.join("-+-") + "-+"
-      end
-
-      def render
-        puts seperator
-        puts "| " + @table.headers.map { |h| h.to_s.ljust(maxes[h]) }.join(" | ") + " |"
-        puts seperator
-        @table.each do |row|
-          puts "| " + row.map { |(h,f)| f.to_s.ljust(maxes[h]) }.join(" | ") + " |"
-        end
-        puts seperator
       end
     end
   end

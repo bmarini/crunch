@@ -12,7 +12,7 @@ class TestCrunch < Test::Unit::TestCase
   end
 
   def test_load_hash
-    table = Crunch.table( [:domain => "example.com", :visits => "5"] )
+    table = Crunch.table( [{:domain => "example.com", :visits => "5"}] )
     assert_equal "example.com", table.first[:domain]
   end
 

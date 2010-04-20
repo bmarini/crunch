@@ -16,7 +16,7 @@ module Crunch
     end
 
     extend Forwardable
-    def_delegators :@table, :each, :first, :last, :[]
+    def_delegators :@table, :each, :first, :last, :[], :to_csv
 
     # Accepts a hash or array. All data inserted into the table must pass
     # through this method
@@ -55,6 +55,26 @@ module Crunch
 
     def as(format)
       Rendering.render(self, format)
+    end
+
+    def merge(*args,&block)
+      merged_data = Hash.new
+
+      # Loop through data sets
+      args.unshift(self).each do |table|
+        table.each do |row|
+          key = yield(row)
+
+          if merged_data[key].nil?
+            merged_data[key] = row
+          else
+            merged_data[key].merge!(row)
+          end
+        end
+      end
+
+      rows = merged_data.values.sort_by { |r| yield(r) }
+      self.class.new(rows.first.keys, &block).push(*rows)
     end
 
     private

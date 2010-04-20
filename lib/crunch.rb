@@ -7,7 +7,9 @@ module Crunch
   autoload :Rendering, "crunch/rendering"
 
   module Renderers
+    autoload :Base,   "crunch/renderers/base"
     autoload :String, "crunch/renderers/string"
+    autoload :CSV,    "crunch/renderers/csv"
   end
   
   class << self
