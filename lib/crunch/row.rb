@@ -7,10 +7,15 @@ module Crunch
       new(hash.keys, hash.values)
     end
 
+    def merge(row)
+      self.class.new(keys, values).merge!(row)
+    end
+
     def merge!(row)
       row.each do |key, value|
         self[key] = value
       end
+      self
     end
   end
 end

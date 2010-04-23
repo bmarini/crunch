@@ -65,16 +65,16 @@ module Crunch
         table.each do |row|
           key = yield(row)
 
-          if merged_data[key].nil?
-            merged_data[key] = row
+          merged_data[key] = if merged_data[key].nil?
+            row
           else
-            merged_data[key].merge!(row)
+            merged_data[key].merge(row)
           end
         end
       end
 
       rows = merged_data.values.sort_by { |r| yield(r) }
-      self.class.new(rows.first.keys, &block).push(*rows)
+      self.class.new(rows.first.keys).push(*rows)
     end
 
     private
