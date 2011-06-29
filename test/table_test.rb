@@ -1,5 +1,5 @@
 require "test_helper"
-class TestCrunchTable < Test::Unit::TestCase
+class TestCrunchTable < MiniTest::Unit::TestCase
   def test_simple_usage
     table = Crunch::Table.new(['date', 'visits', 'conversions'])
     table << ["2010-01-01","14","10"]

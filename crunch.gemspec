@@ -1,23 +1,28 @@
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "crunch/version"
+
 Gem::Specification.new do |s|
   s.name             = "crunch"
-  s.version          = "0.0.1"
-  s.date             = "2010-04-17"
+  s.version          = Crunch::VERSION
+  s.date             = "2011-06-26"
   s.summary          = "Crunch crunches data"
   s.email            = "bmarini@gmail.com"
   s.homepage         = "http://github.com/bmarini/crunch"
   s.description      = "Reporing library for loading, manipulating,\
 aggregating and formatting tabular data"
-  s.has_rdoc         = true
-  s.rdoc_options     = ["--main", "README.txt"]
   s.authors          = ["Ben Marini"]
-  s.files            = [
-    "README.txt",
-    "Rakefile",
-    "crunch.gemspec",
-    "lib/crunch.rb",
-    "lib/crunch/row.rb",
-    "lib/crunch/table.rb"
-  ]
-  s.test_files       = ["test/crunch_test.rb"]
-  s.extra_rdoc_files = ["README.txt"]
+
+  s.add_dependency "fastercsv" if RUBY_VERSION < "1.9"
+  s.add_development_dependency "minitest", "~> 2.3.0"
+  s.add_development_dependency "activesupport", "~> 3.0.0"
+
+  s.has_rdoc         = true
+  s.extra_rdoc_files = ["README.md"]
+  s.rdoc_options     = ["--main", "README.md"]
+
+  s.files = `git ls-files`.split("\n")
+  s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
 end

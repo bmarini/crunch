@@ -1,7 +1,11 @@
 require "test_helper"
-class TestCrunchRow < Test::Unit::TestCase
+class TestCrunchRow < MiniTest::Unit::TestCase
   def test_create_row_from_hash
-    row = Crunch::Row['foo' => 'bar', :bee => 'boo']
+    hsh = ActiveSupport::OrderedHash.new
+    hsh['foo'] = 'bar'
+    hsh[:bee]  = 'boo'
+
+    row = Crunch::Row[hsh]
     assert_equal 'bar', row['foo']
     assert_equal 'boo', row[:bee]
 

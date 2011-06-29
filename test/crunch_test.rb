@@ -1,7 +1,7 @@
 require "test_helper"
-class TestCrunch < Test::Unit::TestCase
+class TestCrunch < MiniTest::Unit::TestCase
   def test_invalid_arg
-    assert_raise(ArgumentError) do
+    assert_raises(ArgumentError) do
       Crunch.table 348
     end
   end
