@@ -1,6 +1,10 @@
+require "crunch/table/aggregate"
+
 module Crunch
   class Table
     include Enumerable
+    include Aggregate
+
     attr_reader :headers, :table
 
     def initialize(headers, &block)

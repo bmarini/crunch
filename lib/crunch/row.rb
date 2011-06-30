@@ -17,5 +17,9 @@ module Crunch
       end
       self
     end
+
+    def to_ary
+      row
+    end
   end
 end
