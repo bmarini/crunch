@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'mathstats'
 if RUBY_VERSION < "1.9"
   require 'fastercsv'
   CSV = FasterCSV
@@ -16,7 +17,14 @@ module Crunch
     autoload :String, "crunch/renderers/string"
     autoload :CSV,    "crunch/renderers/csv"
   end
-  
+
+  if RUBY_VERSION < "1.9"
+    require "active_support/ordered_hash"
+    OrderedHash = ActiveSupport::OrderedHash
+  else
+    OrderedHash = Hash
+  end
+
   class << self
     # Convenience method to Crunch::Table.new
     # 1. String - assumes csv file

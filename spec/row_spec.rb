@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Crunch::Row do
   it "can be initialized from a hash" do
-    hsh = ActiveSupport::OrderedHash.new
+    hsh = Crunch::OrderedHash.new
     hsh['foo'] = 'bar'
     hsh[:bee]  = 'boo'
 

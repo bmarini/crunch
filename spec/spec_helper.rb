@@ -2,7 +2,6 @@ require "rubygems"
 require "bundler/setup"
 require "minitest/autorun"
 require "crunch"
-require "active_support/ordered_hash"
 
 TestData = {
   :visits => [

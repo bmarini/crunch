@@ -12,9 +12,24 @@ module Crunch
         @col_to_group_by = col
       end
 
-      def sum(col)
-        # @transforms.push
-        @aggregators[col] = lambda { |vals| vals.inject(0) { |s,v| s + v } }
+      def sum(*cols)
+       cols.each { |col| aggregate_column(col) { |vals| Mathstats.sum(vals) } }
+      end
+
+      def average(*cols)
+        cols.each { |col| aggregate_column(col) { |vals| Mathstats.average(vals) } }
+      end
+
+      def variance(*cols)
+        cols.each { |col| aggregate_column(col) { |vals| Mathstats.variance(vals) } }
+      end
+
+      def standard_deviation(*cols)
+        cols.each { |col| aggregate_column(col) { |vals| Mathstats.standard_deviation(vals) } }
+      end
+
+      def aggregate_column(col, &block)
+        @aggregators[col] = block
       end
 
       def to_aggregate
@@ -28,23 +43,25 @@ module Crunch
         agg_table
       end
 
+      private
+
       # TODO: Something a little more readable that doesn't require
       # comments to explain what is happening!
       def aggregate_values(rows)
         # Convert rows into hash where each key is a column name and the each
         # value is an array of values for that column
-        cols = Hash.new { |h,k| h[k] = [] }
-        cols = rows.inject(cols) do |hsh, row|
+        cols = OrderedHash.new
+        rows.each do |row|
           row.each do |k,v|
-            hsh[k] << v
+            cols[k] ||= []
+            cols[k] << v
           end
-          hsh
         end
 
         # Loop through each column, applying an aggregate proc if one exists
         # to the array of column values. If a proc does not exist we take the
         # last value from the array.
-        result = cols.inject({}) do |hsh, (col, vals)|
+        result = cols.inject(OrderedHash.new) do |hsh, (col, vals)|
           hsh[col] = if @aggregators[col]
             @aggregators[col].call(vals)
           else

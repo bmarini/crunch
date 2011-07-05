@@ -9,25 +9,23 @@ describe Crunch::Table do
     grouped['2010-01-03'].size.must_equal 2
   end
 
-  # TODO: Support this
-  # table.aggregate do
-  #   group_by('date')
-  #   sum('impressions')
-  #   average('conversions')
-  #   standard_deviation('conversions')
-  #   inject('')
-  # end
-
   it "can aggregate" do
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) ) do
-      integer('impressions')
+      integer('impressions', 'conversions')
+      float('payout')
     end
 
     aggregated = table.aggregate do
       group_by 'date'
-      sum('impressions')
+      sum('impressions', 'payout')
+      average('conversions')
+      # TODO: Support renaming headers for each aggregated column, this will
+      # allow aggregating the same column into two new columns
+      # standard_deviation('conversions')
     end
 
     aggregated.first['impressions'].must_equal 1100
+    aggregated.first['conversions'].must_equal 22.5
+    aggregated.first['payout'].must_equal 30.5
   end
 end
