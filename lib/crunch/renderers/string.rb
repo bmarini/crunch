@@ -6,18 +6,18 @@ module Crunch
         puts "| " + @table.headers.map { |h| h.to_s.ljust(maxes[h]) }.join(" | ") + " |"
         puts seperator
         @table.each do |row|
-          puts "| " + row.map { |(h,f)| f.to_s.ljust(maxes[h]) }.join(" | ") + " |"
+          puts "| " + @table.headers.map { |h| row[h].to_s.ljust(maxes[h]) }.join(" | ") + " |"
         end
         puts seperator
       end
 
       def maxes
         @maxes ||= begin
-          mxs = @table.inject({}) do |m, r|
+          mxs = Hash.new { |h,k| h[k] = 0 }
+          @table.each do |r|
             r.each do |(h,f)|
-              m[h] = [ f.to_s.length, m[h].to_i ].max
+              mxs[h] = [ f.to_s.length, mxs[h] ].max
             end
-            m
           end
 
           # Headers

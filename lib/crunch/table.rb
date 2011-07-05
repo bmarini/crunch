@@ -106,6 +106,9 @@ module Crunch
         end
       end
 
+      # If a new header was created by this transform, add it to the table
+      @headers += (row.headers - @headers) if @headers != row.headers
+
       return row
     end
   end
