@@ -3,7 +3,8 @@ module Crunch
     RENDERERS = {
       :string => Crunch::Renderers::String,
       :str    => Crunch::Renderers::String,
-      :csv    => Crunch::Renderers::CSV
+      :csv    => Crunch::Renderers::CSV,
+      :json   => Crunch::Renderers::JSON
     }
 
     def self.render(table, format)

@@ -1,5 +1,7 @@
 require 'forwardable'
 require 'mathstats'
+require 'multi_json'
+
 if RUBY_VERSION < "1.9"
   require 'fastercsv'
   CSV = FasterCSV
@@ -16,6 +18,7 @@ module Crunch
     autoload :Base,   "crunch/renderers/base"
     autoload :String, "crunch/renderers/string"
     autoload :CSV,    "crunch/renderers/csv"
+    autoload :JSON,   "crunch/renderers/json"
   end
 
   if RUBY_VERSION < "1.9"

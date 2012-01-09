@@ -2,13 +2,16 @@ module Crunch
   module Renderers
     class String < Base
       def render
-        puts seperator
-        puts "| " + @table.headers.map { |h| h.to_s.ljust(maxes[h]) }.join(" | ") + " |"
-        puts seperator
+        str = seperator + "\n"
+        str += "| " + @table.headers.map { |h| h.to_s.ljust(maxes[h]) }.join(" | ") + " |" + "\n"
+        str += seperator + "\n"
+
         @table.each do |row|
-          puts "| " + @table.headers.map { |h| row[h].to_s.ljust(maxes[h]) }.join(" | ") + " |"
+          str += "| " + @table.headers.map { |h| row[h].to_s.ljust(maxes[h]) }.join(" | ") + " |" + "\n"
         end
-        puts seperator
+
+        str += seperator + "\n"
+        str
       end
 
       def maxes

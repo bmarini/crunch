@@ -3,11 +3,9 @@ require "spec_helper"
 describe Crunch::Rendering do
   it "can render to string" do
     table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) )
-    stdout, stderr = capture_io do
-      table.as(:str)
-    end
+    res = table.as(:str)
 
-    stdout.must_equal <<-EOS.strip + "\n"
+    res.must_equal <<-EOS.strip + "\n"
 +------------+-------------+-------------+-------------+--------+
 | date       | domain      | impressions | conversions | payout |
 +------------+-------------+-------------+-------------+--------+
@@ -19,5 +17,11 @@ describe Crunch::Rendering do
 | 2010-01-03 | example.org | 1000        | 45          | 17.5   |
 +------------+-------------+-------------+-------------+--------+
     EOS
+  end
+
+  it "can render to json" do
+    table = Crunch.table( File.expand_path("../data/test.csv", __FILE__) )
+    res = table.as(:json)
+    res.must_equal '[{"date":"2010-01-01","domain":"example.com","impressions":"500","conversions":"20","payout":"15.0"},{"date":"2010-01-01","domain":"example.org","impressions":"600","conversions":"25","payout":"15.5"},{"date":"2010-01-02","domain":"example.com","impressions":"700","conversions":"30","payout":"16.0"},{"date":"2010-01-02","domain":"example.org","impressions":"800","conversions":"35","payout":"16.5"},{"date":"2010-01-03","domain":"example.com","impressions":"900","conversions":"40","payout":"17.0"},{"date":"2010-01-03","domain":"example.org","impressions":"1000","conversions":"45","payout":"17.5"}]'
   end
 end

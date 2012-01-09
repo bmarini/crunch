@@ -15,6 +15,8 @@ aggregating and formatting tabular data"
 
   s.add_dependency "fastercsv" if RUBY_VERSION < "1.9"
   s.add_dependency "mathstats"
+  s.add_dependency "multi_json"
+
   s.add_development_dependency "minitest", "~> 2.3.0"
   s.add_development_dependency "activesupport", "~> 3.0.0"
   s.add_development_dependency "rake", "~> 0.9.2"
