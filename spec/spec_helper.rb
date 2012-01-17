@@ -2,6 +2,7 @@ require "rubygems"
 require "bundler/setup"
 require "minitest/autorun"
 require "crunch"
+require "json"
 
 TestData = {
   :visits => [
