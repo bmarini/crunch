@@ -9,6 +9,7 @@ module Crunch
 
     def initialize(headers, &block)
       @transforms = []
+      @filters    = []
       @table      = CSV::Table.new([])
       @headers    = headers
 
@@ -30,7 +31,8 @@ module Crunch
     end
 
     def <<(row)
-      @table << run_transforms( to_row(row) )
+      row = run_transforms( to_row(row) )
+      @table << row unless filtered?(row)
     end
 
     def date(*cols)
@@ -51,6 +53,14 @@ module Crunch
     # the return value of the block
     def transform(*cols, &block)
       cols.empty? ? transform_row(&block) : transform_cols(*cols, &block)
+    end
+
+    def filter(&block)
+      @filters.push(block)
+    end
+
+    def filtered?(row)
+      @filters.any? { |prc| prc.call(row) }
     end
 
     def to_s

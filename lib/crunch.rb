@@ -2,13 +2,6 @@ require 'forwardable'
 require 'mathstats'
 require 'multi_json'
 
-if RUBY_VERSION < "1.9"
-  require 'fastercsv'
-  CSV = FasterCSV
-else
-  require 'csv'
-end
-
 module Crunch
   autoload :Table, "crunch/table"
   autoload :Row, "crunch/row"
@@ -23,9 +16,12 @@ module Crunch
 
   if RUBY_VERSION < "1.9"
     require "active_support/ordered_hash"
+    require 'fastercsv'
     OrderedHash = ActiveSupport::OrderedHash
+    CSV = FasterCSV
   else
     OrderedHash = Hash
+    require 'csv'
   end
 
   class << self
