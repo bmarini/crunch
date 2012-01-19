@@ -24,8 +24,9 @@ describe Crunch::Table do
       # standard_deviation('conversions')
     end
 
-    aggregated.first['impressions'].must_equal 1100
-    aggregated.first['conversions'].must_equal 22.5
-    aggregated.first['payout'].must_equal 30.5
+    first = aggregated.find { |r| r['date'] == '2010-01-01' }
+    first['impressions'].must_equal 1100
+    first['conversions'].must_equal 22.5
+    first['payout'].must_equal 30.5
   end
 end
