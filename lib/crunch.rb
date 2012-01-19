@@ -25,16 +25,22 @@ module Crunch
   end
 
   class << self
-    # Convenience method to Crunch::Table.new
-    # 1. String - assumes csv file
-    # 2. Array of arrays ( parsed csv file )
-    # 3. Array of hashes ( database resultset )
+    # Convenience method to Crunch::Table.new that will create a Crunch::Table
+    # instance and push data into it in one go
+    #
+    # arg   - A string, array or arrays, or array of hashes
+    #         1. String - path to a csv file
+    #         2. Array of arrays ( parsed csv file )
+    #         3. Array of hashes ( database resultset )
+    # block - A block passed to Crunch::Table.new
     #
     # Examples
     #
-    # Crunch.table("filename.csv")
-    # Crunch.table([['a','b','c'],[1,2,3],[4,5,6], ...])
-    # Crunch.table([{"a" => 1, "b" => 2, "c" => 3}, ...])
+    #   Crunch.table("filename.csv")
+    #   Crunch.table([['a','b','c'],[1,2,3],[4,5,6], ...])
+    #   Crunch.table([{"a" => 1, "b" => 2, "c" => 3}, ...])
+    #
+    # Returns an instance of Crunch::Table
     def table(arg, &block)
       if arg.is_a?(String)
         table(CSV.read(arg), &block)

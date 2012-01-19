@@ -7,6 +7,20 @@ module Crunch
 
     attr_reader :headers, :table
 
+    # Create a new Crunch::Table
+    #
+    # headers - Array of header names for the table
+    # block   - Block evaluated in the context of the instance, for convenience
+    #
+    # Examples
+    #
+    #   table = Crunch::Table.new(["a", "b"]) do
+    #     integer("a")
+    #     date("b")
+    #   end
+    #   table.push(['1', '2011-01-01'])
+    #
+    # Returns an instance of Crunch::Table
     def initialize(headers, &block)
       @transforms = []
       @filters    = []
@@ -23,8 +37,18 @@ module Crunch
     extend Forwardable
     def_delegators :@table, :each, :first, :last, :[], :to_csv
 
-    # Accepts a hash or array. All data inserted into the table must pass
-    # through this method
+    # Pushes a new row of data into the table. All data inserted into the
+    # table must pass through this method or else transforms and filters
+    # won't be applied.
+    #
+    # rows - A hash or array of data
+    #
+    # Examples
+    #
+    #   table.push(['1','2'])
+    #   table.push(:a => '1', :b => '2')
+    #
+    # Returns the table for chaining
     def push(*rows)
       rows.each { |row| self << row }
       self
